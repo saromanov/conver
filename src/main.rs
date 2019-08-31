@@ -17,7 +17,7 @@ fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
 // returns file name of the 
 fn get_first_arg() -> Result<OsString, Box<dyn Error>> {
     match env::args_os().nth(1) {
-        None => Err(From::from("expected 1 argument, but got none")),
+        None => Err(From::from("expected path to csv file")),
         Some(file_path) => Ok(file_path),
     }
 }
