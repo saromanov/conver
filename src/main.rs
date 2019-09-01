@@ -4,15 +4,16 @@ use std::process;
 use std::ffi::OsString;
 use std::fs::File;
 use std::env;
+use std::path::Path;
 
 fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
-    let mut rdr = csv::Reader::from_reader(io::stdin());
-    let mut file = match File::open(rdr) {
+    let mut file = match File::open(Path::new(filename.as_str())) {
         Ok(file) => {
-            let mut rdr = csv::Reader::from_reader(io::stdin()),
-        }
-        Err(why) => panic("error"),
+            let mut rdr = csv::Reader::from_reader(file);
+        },
+        Err(why) => panic!("error"),
     };
+    Ok(())
 }
 
 // returns file name of the 
