@@ -7,11 +7,12 @@ use std::env;
 
 fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
     let mut rdr = csv::Reader::from_reader(io::stdin());
-    for result in rdr.records() {
-        let record = result?;
-        println!("{:?}", record);
-    }
-    Ok(())
+    let mut file = match File::open(rdr) {
+        Ok(file) => {
+            let mut rdr = csv::Reader::from_reader(io::stdin()),
+        }
+        Err(why) => panic("error"),
+    };
 }
 
 // returns file name of the 
