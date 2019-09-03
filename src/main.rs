@@ -9,7 +9,13 @@ use std::path::Path;
 fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
     let mut file = match File::open(Path::new(filename.as_str())) {
         Ok(file) => {
-            let mut rdr = csv::Reader::from_reader(file);
+            let mut rdr = csv::ReaderBuilder::new().from_reader(file);
+            let headers = rdr.headers()?.clone();
+            println!("{:?}", headers);
+            for result in rdr.records() {
+                let record = result?;
+                println!("{:?}", record);
+            }
         },
         Err(why) => panic!("error"),
     };
@@ -26,7 +32,7 @@ fn get_first_arg() -> Result<OsString, Box<dyn Error>> {
 
 fn main() {
     
-    let file_name = get_first_arg().unwrap();
+   let file_name = get_first_arg().unwrap();
    if let Err(err) = read_csv(file_name.into_string().unwrap()) {
         println!("error running example: {}", err);
         process::exit(1);
