@@ -9,9 +9,12 @@ use std::path::Path;
 fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
     let mut file = match File::open(Path::new(filename.as_str())) {
         Ok(file) => {
-            let mut rdr = csv::ReaderBuilder::new().from_reader(file);
+            let mut rdr = csv::ReaderBuilder::new()
+            .escape(Some(b'\\'))
+            .flexible(true)
+            .comment(Some(b'#'))
+            .from_reader(file);
             let headers = rdr.headers()?.clone();
-            println!("{:?}", headers);
             for result in rdr.records() {
                 let record = result?;
                 println!("{:?}", record);
