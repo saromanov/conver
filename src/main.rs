@@ -10,7 +10,7 @@ struct Definition {
     headers:csv::StringRecord,
     rows:Vec<csv::StringRecord>
 }
-fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
+fn read_csv(filename:String) -> Result<Definition, Box<dyn Error>> {
     let mut file = match File::open(Path::new(filename.as_str())) {
         Ok(file) => {
             let mut rdr = csv::ReaderBuilder::new()
@@ -24,10 +24,11 @@ fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
                 data.push(result?)
             }
             let def = Definition{headers:headers, rows:data};
+            Ok(def)
         },
         Err(why) => panic!("error"),
     };
-    Ok(())
+    panic!("error")
 }
 
 fn sql_generate(headers:String, rows:String) -> Result<(), String> {
