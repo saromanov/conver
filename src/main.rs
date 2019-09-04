@@ -6,6 +6,10 @@ use std::fs::File;
 use std::env;
 use std::path::Path;
 
+struct Definition {
+    headers:csv::StringRecord
+    rows:csv::StringRecordsIter
+}
 fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
     let mut file = match File::open(Path::new(filename.as_str())) {
         Ok(file) => {
@@ -15,13 +19,14 @@ fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
             .comment(Some(b'#'))
             .from_reader(file);
             let headers = rdr.headers()?.clone();
-            for result in rdr.records() {
-                let record = result?;
-                println!("{:?}", record);
-            }
+            let def = Definition{headers:headers, rows:rdr.records()};
         },
         Err(why) => panic!("error"),
     };
+    Ok(())
+}
+
+fn sql_generate(headers:String, rows:String) -> Result<(), String> {
     Ok(())
 }
 
