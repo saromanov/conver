@@ -7,8 +7,8 @@ use std::env;
 use std::path::Path;
 
 struct Definition {
-    headers:csv::StringRecord
-    rows:csv::StringRecordsIter
+    headers:csv::StringRecord,
+    rows:Vec<csv::StringRecord>
 }
 fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
     let mut file = match File::open(Path::new(filename.as_str())) {
@@ -19,7 +19,11 @@ fn read_csv(filename:String) -> Result<(), Box<dyn Error>> {
             .comment(Some(b'#'))
             .from_reader(file);
             let headers = rdr.headers()?.clone();
-            let def = Definition{headers:headers, rows:rdr.records()};
+            let mut data = Vec::new();
+            for result in rdr.records() {
+                data.push(result?)
+            }
+            let def = Definition{headers:headers, rows:data};
         },
         Err(why) => panic!("error"),
     };
