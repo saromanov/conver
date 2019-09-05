@@ -6,12 +6,27 @@ use std::fs::File;
 use std::env;
 use std::path::Path;
 
+
 struct Definition {
     headers:csv::StringRecord,
     rows:Vec<csv::StringRecord>
 }
-fn read_csv(filename:String) -> Result<Definition, Box<dyn Error>> {
-    let mut file = match File::open(Path::new(filename.as_str())) {
+
+pub struct App<'a, 'b>
+where 
+    'a:'b {
+
+    }
+
+impl<'a, 'b> App<'a, 'b> {
+    pub fn new() -> Self {
+        App {
+
+        }
+    }
+
+    pub fn from_csv_file(filename:String) -> Self {
+        let mut file = match File::open(Path::new(filename.as_str())) {
         Ok(file) => {
             let mut rdr = csv::ReaderBuilder::new()
             .escape(Some(b'\\'))
@@ -29,6 +44,7 @@ fn read_csv(filename:String) -> Result<Definition, Box<dyn Error>> {
         Err(why) => panic!("error"),
     };
     panic!("error")
+    }
 }
 
 fn sql_generate(headers:String, rows:String) -> Result<(), String> {
