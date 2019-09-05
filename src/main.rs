@@ -12,13 +12,11 @@ struct Definition {
     rows:Vec<csv::StringRecord>
 }
 
-pub struct App<'a, 'b>
-where 
-    'a:'b {
+pub struct App
+{
+}
 
-    }
-
-impl<'a, 'b> App<'a, 'b> {
+impl App {
     pub fn new() -> Self {
         App {
 
@@ -60,10 +58,6 @@ fn get_first_arg() -> Result<OsString, Box<dyn Error>> {
 }
 
 fn main() {
-    
    let file_name = get_first_arg().unwrap();
-   if let Err(err) = read_csv(file_name.into_string().unwrap()) {
-        println!("error running example: {}", err);
-        process::exit(1);
-    }
+   let data = App::new().read_from_csv(file_name.into_string().unwrap());
 }
