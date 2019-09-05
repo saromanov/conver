@@ -7,23 +7,21 @@ use std::env;
 use std::path::Path;
 
 
-struct Definition {
-    headers:csv::StringRecord,
-    rows:Vec<csv::StringRecord>
-}
-
 pub struct App
 {
+    headers:csv::StringRecord,
+    rows:Vec<csv::StringRecord>
 }
 
 impl App {
     pub fn new() -> Self {
         App {
-
+            headers:csv::StringRecord::new(),
+            rows:Vec::new()
         }
     }
 
-    pub fn from_csv_file(filename:String) -> Self {
+    pub fn from_csv_file(&self, filename:String) -> Self {
         let mut file = match File::open(Path::new(filename.as_str())) {
         Ok(file) => {
             let mut rdr = csv::ReaderBuilder::new()
@@ -31,13 +29,13 @@ impl App {
             .flexible(true)
             .comment(Some(b'#'))
             .from_reader(file);
-            let headers = rdr.headers()?.clone();
+            let headers = rdr.headers().unwrap().clone();
             let mut data = Vec::new();
             for result in rdr.records() {
-                data.push(result?)
+                data.push(result.unwrap())
             }
-            let def = Definition{headers:headers, rows:data};
-            Ok(def)
+            let mut def = App{headers:headers, rows:data};
+            def
         },
         Err(why) => panic!("error"),
     };
@@ -59,5 +57,5 @@ fn get_first_arg() -> Result<OsString, Box<dyn Error>> {
 
 fn main() {
    let file_name = get_first_arg().unwrap();
-   let data = App::new().read_from_csv(file_name.into_string().unwrap());
+   let data = App::new().from_csv_file(file_name.into_string().unwrap());
 }
