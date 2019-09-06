@@ -44,7 +44,12 @@ impl App {
     }
 
     pub fn sql_generate(&self) {
-        println!("{:?}", self.headers)
+        let mut data = Vec::new();
+        for head in self.headers.iter() {
+            data.push(head);
+        }
+        let mut result = format!("INSERT INTO({})",  data.join(",").as_str());
+       println!("{:?}", result)
     }
 }
 
