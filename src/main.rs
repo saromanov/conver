@@ -46,6 +46,8 @@ impl App {
             let d = format!("({}),", get_str_from_string_record(v));
             result += d.as_str();
         }
+        result.truncate(result.len()- 1);
+        result += ";";
         println!("{:?}", result)
     }
 }
