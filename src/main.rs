@@ -1,6 +1,4 @@
 use std::error::Error;
-use std::io;
-use std::process;
 use std::ffi::OsString;
 use std::fs::File;
 use std::env;
@@ -39,8 +37,6 @@ impl App {
         },
         Err(why) => panic!("error"),
     };
-
-    self
     }
 
     pub fn sql_generate(&self) {
@@ -48,7 +44,8 @@ impl App {
         for head in self.headers.iter() {
             data.push(head);
         }
-        let mut result = format!("INSERT INTO({})",  data.join(",").as_str());
+
+        let mut result = format!("INSERT INTO({}) VALUES()",  data.join(",").as_str());
        println!("{:?}", result)
     }
 }
