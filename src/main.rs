@@ -45,9 +45,20 @@ impl App {
             data.push(head);
         }
 
+        for line in self.rows {
+            
+        }
         let mut result = format!("INSERT INTO({}) VALUES()",  data.join(",").as_str());
-       println!("{:?}", result)
+        println!("{:?}", result)
     }
+}
+
+pub fn get_str_from_string_record(data:csv::StringRecord) String {
+    let mut data = Vec::new();
+    for head in self.headers.iter() {
+        data.push(head);
+    }
+    data.join(",").as_str()
 }
 
 // returns file name of the 
