@@ -40,25 +40,18 @@ impl App {
     }
 
     pub fn sql_generate(&self) {
-        let mut data = Vec::new();
-        for head in self.headers.iter() {
-            data.push(head);
-        }
-
-        for line in self.rows {
-            
-        }
-        let mut result = format!("INSERT INTO({}) VALUES()",  data.join(",").as_str());
+        let data = get_str_from_string_record(self.headers.clone());
+        let mut result = format!("INSERT INTO({}) VALUES()",  data.as_str());
         println!("{:?}", result)
     }
 }
 
-pub fn get_str_from_string_record(data:csv::StringRecord) String {
+pub fn get_str_from_string_record(inp:csv::StringRecord) -> String {
     let mut data = Vec::new();
-    for head in self.headers.iter() {
+    for head in inp.iter() {
         data.push(head);
     }
-    data.join(",").as_str()
+    data.join(",")
 }
 
 // returns file name of the 
