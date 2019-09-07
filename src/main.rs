@@ -41,11 +41,10 @@ impl App {
 
     pub fn sql_generate(&self) {
         let data = get_str_from_string_record(self.headers.clone());
-        let mut result = format!("INSERT INTO({}) VALUES()",  data.as_str());
-
+        let mut result = format!("INSERT INTO({}) VALUES ",  data.as_str());
         for v in self.rows.clone() {
-            let d = format!("({})", get_str_from_string_record(v));
-            println!("{:?}", d);
+            let d = format!("({}),", get_str_from_string_record(v));
+            result += d.as_str();
         }
         println!("{:?}", result)
     }
