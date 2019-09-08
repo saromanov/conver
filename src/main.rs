@@ -20,7 +20,7 @@ impl App {
     }
 
     pub fn from_csv_file(self, filename:String) -> Self {
-        let mut file = match File::open(Path::new(filename.as_str())) {
+        match File::open(Path::new(filename.as_str())) {
         Ok(file) => {
             let mut rdr = csv::ReaderBuilder::new()
             .escape(Some(b'\\'))
@@ -32,10 +32,9 @@ impl App {
             for result in rdr.records() {
                 data.push(result.unwrap())
             }
-            let mut def = App{headers:headers, rows:data};
-            return def
+            return App{headers:headers, rows:data};
         },
-        Err(why) => panic!("error"),
+        Err(_) => panic!("error"),
     };
     }
 
@@ -70,5 +69,5 @@ fn get_first_arg() -> Result<OsString, Box<dyn Error>> {
 
 fn main() {
    let file_name = get_first_arg().unwrap();
-   let data = App::new().from_csv_file(file_name.into_string().unwrap()).sql_generate(&"val");
+   App::new().from_csv_file(file_name.into_string().unwrap()).sql_generate(&"val");
 }
