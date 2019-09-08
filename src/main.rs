@@ -39,9 +39,9 @@ impl App {
     };
     }
 
-    pub fn sql_generate(&self) {
+    pub fn sql_generate(&self, table_name:&str) {
         let data = get_str_from_string_record(self.headers.clone());
-        let mut result = format!("INSERT INTO({}) VALUES ",  data.as_str());
+        let mut result = format!("INSERT INTO {} ({}) VALUES ", table_name, data.as_str());
         for v in self.rows.clone() {
             let d = format!("({}),", get_str_from_string_record(v));
             result += d.as_str();
@@ -70,5 +70,5 @@ fn get_first_arg() -> Result<OsString, Box<dyn Error>> {
 
 fn main() {
    let file_name = get_first_arg().unwrap();
-   let data = App::new().from_csv_file(file_name.into_string().unwrap()).sql_generate();
+   let data = App::new().from_csv_file(file_name.into_string().unwrap()).sql_generate(&"val");
 }
