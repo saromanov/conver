@@ -3,7 +3,7 @@ use std::ffi::OsString;
 use std::fs::File;
 use std::env;
 use std::path::Path;
-
+use std::io::prelude::*;
 
 pub struct App
 {
@@ -48,6 +48,12 @@ impl App {
         result.truncate(result.len()- 1);
         result += ";";
         println!("{:?}", result)
+    }
+
+    pub fn save_to_file(&self, file_name:&str) -> App {
+        let mut file = File::create(file_name).unwrap();
+        file.write_all(b"Hello, world!").unwrap();
+        App{headers:self.headers.clone(), rows:self.rows.clone()}
     }
 }
 
